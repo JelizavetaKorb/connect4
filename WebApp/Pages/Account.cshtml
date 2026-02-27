@@ -1,0 +1,44 @@
+@page
+@model WebApp.Pages.AccountModel
+@{
+    ViewData["Title"] = "My Account";
+}
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">My Account</h2>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-md-8">
+                            <h4 class="mb-1">@Model.Username</h4>
+                            <p class="text-muted mb-0">Logged in to Connect 4</p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <a asp-page="/ChooseGame" class="btn btn-primary">
+                                Back to Game Menu
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <hr />
+                    
+                    <h5>Game Information</h5>
+                    <p class="text-muted">Your game progress is saved in your session.</p>
+                    <p class="text-muted">Start a new game or continue your existing game from the Game Menu.</p>
+                    
+                    <div class="mt-4">
+                        <form method="post" asp-page-handler="Logout">
+                            <button type="submit" class="btn btn-outline-danger">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

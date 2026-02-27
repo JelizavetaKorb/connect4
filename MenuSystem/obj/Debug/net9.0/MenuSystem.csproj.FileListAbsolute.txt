@@ -1,0 +1,11 @@
+/Users/mihhailkorb/icd0008-25f/connect4/MenuSystem/bin/Debug/net9.0/MenuSystem.deps.json
+/Users/mihhailkorb/icd0008-25f/connect4/MenuSystem/bin/Debug/net9.0/MenuSystem.dll
+/Users/mihhailkorb/icd0008-25f/connect4/MenuSystem/bin/Debug/net9.0/MenuSystem.pdb
+/Users/mihhailkorb/icd0008-25f/connect4/MenuSystem/obj/Debug/net9.0/MenuSystem.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mihhailkorb/icd0008-25f/connect4/MenuSystem/obj/Debug/net9.0/MenuSystem.AssemblyInfoInputs.cache
+/Users/mihhailkorb/icd0008-25f/connect4/MenuSystem/obj/Debug/net9.0/MenuSystem.AssemblyInfo.cs
+/Users/mihhailkorb/icd0008-25f/connect4/MenuSystem/obj/Debug/net9.0/MenuSystem.csproj.CoreCompileInputs.cache
+/Users/mihhailkorb/icd0008-25f/connect4/MenuSystem/obj/Debug/net9.0/MenuSystem.dll
+/Users/mihhailkorb/icd0008-25f/connect4/MenuSystem/obj/Debug/net9.0/refint/MenuSystem.dll
+/Users/mihhailkorb/icd0008-25f/connect4/MenuSystem/obj/Debug/net9.0/MenuSystem.pdb
+/Users/mihhailkorb/icd0008-25f/connect4/MenuSystem/obj/Debug/net9.0/ref/MenuSystem.dll

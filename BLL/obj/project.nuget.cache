@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "SP1tDVoPX2g=",
+  "success": true,
+  "projectFilePath": "/Users/mihhailkorb/icd0008-25f/connect4/BLL/BLL.csproj",
+  "expectedPackageFiles": [
+    "/Users/mihhailkorb/.nuget/packages/microsoft.netcore.app.ref/9.0.12/microsoft.netcore.app.ref.9.0.12.nupkg.sha512",
+    "/Users/mihhailkorb/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.12/microsoft.aspnetcore.app.ref.9.0.12.nupkg.sha512"
+  ],
+  "logs": []
+}

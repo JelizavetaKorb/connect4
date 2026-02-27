@@ -1,0 +1,99 @@
+@page
+@model WebApp.Pages.ChooseGameModel
+@{
+    ViewData["Title"] = "Choose Game";
+}
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center mb-0">Let's play, @Model.Username!</h2>
+                </div>
+                <div class="card-body p-5">
+                    @if (TempData["SaveMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @TempData["SaveMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                    
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                    
+                    <div class="text-center mb-4">
+                        <h4>What would you like to do?</h4>
+                    </div>
+                    
+                    <div class="row g-4 justify-content-center">
+                        <div class="col-md-5">
+                            <div class="card h-100 border-primary">
+                                <div class="card-body text-center d-flex flex-column">
+                                    <i class="bi bi-folder2-open display-1 text-primary mb-3"></i>
+                                    <h5 class="card-title">Load Saved Game</h5>
+                                    <p class="card-text text-muted flex-grow-1">
+                                        View and load your previously saved games
+                                    </p>
+                                    <a asp-page="/SavedGames" class="btn btn-primary btn-lg mt-auto">
+                                        View Saved Games
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-5">
+                            <div class="card h-100 border-success">
+                                <div class="card-body text-center d-flex flex-column">
+                                    <i class="bi bi-plus-circle display-1 text-success mb-3"></i>
+                                    <h5 class="card-title">New Game</h5>
+                                    <p class="card-text text-muted flex-grow-1">
+                                        Configure and start a fresh game
+                                    </p>
+                                    <a asp-page="/ConfigureGame" class="btn btn-success btn-lg mt-auto">
+                                        Start New Game
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-8 mx-auto">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center mb-3">
+                                        <i class="bi bi-box-arrow-in-right"></i> Join Multiplayer Game
+                                    </h5>
+                                    <p class="text-muted text-center small mb-3">
+                                        Enter the 6-digit code from your friend to join their game
+                                    </p>
+                                    <form method="post" asp-page="/SavedGames" asp-page-handler="JoinGame" class="row g-2">
+                                        <div class="col-8">
+                                            <input type="text" 
+                                                   name="joinCode" 
+                                                   class="form-control form-control-lg text-center" 
+                                                   placeholder="000000"
+                                                   pattern="[0-9]{6}"
+                                                   maxlength="6"
+                                                   required />
+                                        </div>
+                                        <div class="col-4">
+                                            <button type="submit" class="btn btn-info btn-lg w-100">Join</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

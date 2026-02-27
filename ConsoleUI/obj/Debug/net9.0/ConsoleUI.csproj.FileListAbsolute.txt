@@ -1,0 +1,17 @@
+/Users/mihhailkorb/icd0008-25f/connect4/ConsoleUI/bin/Debug/net9.0/ConsoleUI.deps.json
+/Users/mihhailkorb/icd0008-25f/connect4/ConsoleUI/bin/Debug/net9.0/ConsoleUI.dll
+/Users/mihhailkorb/icd0008-25f/connect4/ConsoleUI/bin/Debug/net9.0/ConsoleUI.pdb
+/Users/mihhailkorb/icd0008-25f/connect4/ConsoleUI/bin/Debug/net9.0/BLL.dll
+/Users/mihhailkorb/icd0008-25f/connect4/ConsoleUI/bin/Debug/net9.0/BLL.pdb
+/Users/mihhailkorb/icd0008-25f/connect4/ConsoleUI/obj/Debug/net9.0/ConsoleUI.csproj.AssemblyReference.cache
+/Users/mihhailkorb/icd0008-25f/connect4/ConsoleUI/obj/Debug/net9.0/ConsoleUI.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mihhailkorb/icd0008-25f/connect4/ConsoleUI/obj/Debug/net9.0/ConsoleUI.AssemblyInfoInputs.cache
+/Users/mihhailkorb/icd0008-25f/connect4/ConsoleUI/obj/Debug/net9.0/ConsoleUI.AssemblyInfo.cs
+/Users/mihhailkorb/icd0008-25f/connect4/ConsoleUI/obj/Debug/net9.0/ConsoleUI.csproj.CoreCompileInputs.cache
+/Users/mihhailkorb/icd0008-25f/connect4/ConsoleUI/obj/Debug/net9.0/ConsoleUI.csproj.Up2Date
+/Users/mihhailkorb/icd0008-25f/connect4/ConsoleUI/obj/Debug/net9.0/ConsoleUI.dll
+/Users/mihhailkorb/icd0008-25f/connect4/ConsoleUI/obj/Debug/net9.0/refint/ConsoleUI.dll
+/Users/mihhailkorb/icd0008-25f/connect4/ConsoleUI/obj/Debug/net9.0/ConsoleUI.pdb
+/Users/mihhailkorb/icd0008-25f/connect4/ConsoleUI/obj/Debug/net9.0/ref/ConsoleUI.dll
+/Users/mihhailkorb/icd0008-25f/connect4/ConsoleUI/bin/Debug/net9.0/DAL.dll
+/Users/mihhailkorb/icd0008-25f/connect4/ConsoleUI/bin/Debug/net9.0/DAL.pdb

@@ -1,0 +1,11 @@
+/Users/mihhailkorb/icd0008-25f/connect4/BLL/bin/Debug/net9.0/BLL.deps.json
+/Users/mihhailkorb/icd0008-25f/connect4/BLL/bin/Debug/net9.0/BLL.dll
+/Users/mihhailkorb/icd0008-25f/connect4/BLL/bin/Debug/net9.0/BLL.pdb
+/Users/mihhailkorb/icd0008-25f/connect4/BLL/obj/Debug/net9.0/BLL.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mihhailkorb/icd0008-25f/connect4/BLL/obj/Debug/net9.0/BLL.AssemblyInfoInputs.cache
+/Users/mihhailkorb/icd0008-25f/connect4/BLL/obj/Debug/net9.0/BLL.AssemblyInfo.cs
+/Users/mihhailkorb/icd0008-25f/connect4/BLL/obj/Debug/net9.0/BLL.csproj.CoreCompileInputs.cache
+/Users/mihhailkorb/icd0008-25f/connect4/BLL/obj/Debug/net9.0/BLL.dll
+/Users/mihhailkorb/icd0008-25f/connect4/BLL/obj/Debug/net9.0/refint/BLL.dll
+/Users/mihhailkorb/icd0008-25f/connect4/BLL/obj/Debug/net9.0/BLL.pdb
+/Users/mihhailkorb/icd0008-25f/connect4/BLL/obj/Debug/net9.0/ref/BLL.dll

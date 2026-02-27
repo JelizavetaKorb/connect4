@@ -1,0 +1,17 @@
+/Users/mihhailkorb/icd0008-25f/connect4/DAL/bin/Debug/net9.0/DAL.deps.json
+/Users/mihhailkorb/icd0008-25f/connect4/DAL/bin/Debug/net9.0/DAL.dll
+/Users/mihhailkorb/icd0008-25f/connect4/DAL/bin/Debug/net9.0/DAL.pdb
+/Users/mihhailkorb/icd0008-25f/connect4/DAL/bin/Debug/net9.0/BLL.dll
+/Users/mihhailkorb/icd0008-25f/connect4/DAL/bin/Debug/net9.0/BLL.pdb
+/Users/mihhailkorb/icd0008-25f/connect4/DAL/obj/Debug/net9.0/DAL.csproj.AssemblyReference.cache
+/Users/mihhailkorb/icd0008-25f/connect4/DAL/obj/Debug/net9.0/DAL.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mihhailkorb/icd0008-25f/connect4/DAL/obj/Debug/net9.0/DAL.AssemblyInfoInputs.cache
+/Users/mihhailkorb/icd0008-25f/connect4/DAL/obj/Debug/net9.0/DAL.AssemblyInfo.cs
+/Users/mihhailkorb/icd0008-25f/connect4/DAL/obj/Debug/net9.0/DAL.csproj.CoreCompileInputs.cache
+/Users/mihhailkorb/icd0008-25f/connect4/DAL/obj/Debug/net9.0/DAL.csproj.Up2Date
+/Users/mihhailkorb/icd0008-25f/connect4/DAL/obj/Debug/net9.0/DAL.dll
+/Users/mihhailkorb/icd0008-25f/connect4/DAL/obj/Debug/net9.0/refint/DAL.dll
+/Users/mihhailkorb/icd0008-25f/connect4/DAL/obj/Debug/net9.0/DAL.pdb
+/Users/mihhailkorb/icd0008-25f/connect4/DAL/obj/Debug/net9.0/ref/DAL.dll
+/Users/mihhailkorb/icd0008-25f/connect4/DAL/bin/Debug/net9.0/DAL.runtimeconfig.json
+/Users/mihhailkorb/icd0008-25f/connect4/DAL/obj/Debug/net9.0/DAL.genruntimeconfig.cache

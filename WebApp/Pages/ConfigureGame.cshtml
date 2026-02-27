@@ -1,0 +1,233 @@
+@page
+@model WebApp.Pages.ConfigureGameModel
+@{
+    ViewData["Title"] = "Configure Game";
+}
+
+<div class="container">
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center mb-0">New Game Settings</h2>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" class="needs-validation" novalidate>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="boardWidth" class="form-label">Board Width:</label>
+                                <input type="number"
+                                       class="form-control"
+                                       id="boardWidth"
+                                       name="boardWidth"
+                                       value="@Model.config.BoardWidth"
+                                       min="3"
+                                       max="37"
+                                       required />
+                                <small class="text-muted">Number of columns (3-37)</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="boardHeight" class="form-label">Board Height:</label>
+                                <input type="number"
+                                       class="form-control"
+                                       id="boardHeight"
+                                       name="boardHeight"
+                                       value="@Model.config.BoardHeight"
+                                       min="3"
+                                       max="37"
+                                       required />
+                                <small class="text-muted">Number of rows (3-37)</small>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="winCondition" class="form-label">Win Condition:</label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="winCondition"
+                                   name="winCondition"
+                                   value="@Model.config.WinCondition"
+                                   required />
+                            <small class="text-muted">Pieces in a row to win</small>
+                            @if (ModelState.TryGetValue("winCondition", out var error) && error.Errors.Count > 0)
+                            {
+                                <div class="text-danger small mt-1">@error.Errors[0].ErrorMessage</div>
+                            }
+                        </div>
+                        <div class="form-check mb-4">
+                            <input type="checkbox"
+                                   class="form-check-input"
+                                   id="isCylindrical"
+                                   name="isCylindrical"
+                                   value="true"
+                                   @(Model.config.IsCylindrical ? "checked" : "") />
+                            <label class="form-check-label" for="isCylindrical">
+                                <div class="form-label">Cylindrical Board - left and right edges connect</div>
+                            </label>
+                        </div>
+
+                        <hr />
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">I want to play as:</label>
+                            <div class="btn-group w-100" role="group">
+                                <input type="radio" class="btn-check" name="userPlayer" id="userPlayer1" value="1" checked onchange="updatePlayerFields()">
+                                <label class="btn btn-outline-primary" for="userPlayer1">Player 1 (X)</label>
+                                
+                                <input type="radio" class="btn-check" name="userPlayer" id="userPlayer2" value="2" onchange="updatePlayerFields()">
+                                <label class="btn btn-outline-primary" for="userPlayer2">Player 2 (O)</label>
+                            </div>
+                        </div>
+
+                        <hr />
+                        
+                        <label class="form-label">Player 1 (X)</label>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="p1Type" class="form-label">Type:</label>
+                                <select class="form-select"
+                                        id="p1Type"
+                                        name="p1Type"
+                                        onchange="updatePlayerFields()"
+                                        required>
+                                    <option value="Human" selected="@(Model.config.P1Type == BLL.EPlayerType.Human)">Human</option>
+                                    <option value="AI" selected="@(Model.config.P1Type == BLL.EPlayerType.Ai)">AI</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="player1Name" class="form-label">Name:</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="player1Name"
+                                       name="player1Name"
+                                       value="@Model.Username"
+                                       placeholder="@Model.config.Player1Name"
+                                       maxlength="50" />
+                            </div>
+                        </div>
+
+                        <label class="form-label">Player 2 (O)</label>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="p2Type" class="form-label">Type:</label>
+                                <select class="form-select"
+                                        id="p2Type"
+                                        name="p2Type"
+                                        onchange="updatePlayerFields()"
+                                        required>
+                                    <option value="Human" selected="@(Model.config.P2Type == BLL.EPlayerType.Human)">Human</option>
+                                    <option value="AI" selected="@(Model.config.P2Type == BLL.EPlayerType.Ai)">AI</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="player2Name" class="form-label">Name:</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="player2Name"
+                                       name="player2Name"
+                                       value="@Model.Username"
+                                       placeholder="@Model.config.Player2Name"
+                                       maxlength="50" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-check mb-4" id="invitePlayerContainer" style="display: none;">
+                            <input type="checkbox" class="form-check-input" id="invitePlayer2" name="invitePlayer2" value="true" />
+                            <label class="form-check-label" for="invitePlayer2">
+                                <strong>🔗 Invite another player online</strong> (generates join code)
+                            </label>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                Start Game
+                            </button>
+                            <a asp-page="/ChooseGame" class="btn btn-outline-secondary">
+                                Back
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const username = '@Model.Username';
+    
+    function updatePlayerFields() {
+        const userPlayer = document.querySelector('input[name="userPlayer"]:checked').value;
+        const p1Type = document.getElementById('p1Type');
+        const p2Type = document.getElementById('p2Type');
+        const p1Name = document.getElementById('player1Name');
+        const p2Name = document.getElementById('player2Name');
+        const inviteContainer = document.getElementById('invitePlayerContainer');
+        const inviteCheckbox = document.getElementById('invitePlayer2');
+        
+        if (userPlayer === '1') {
+            p1Type.value = 'Human';
+            p1Type.disabled = true;
+            p1Name.value = username;
+            p1Name.readOnly = true;
+            p2Type.disabled = false;
+            
+            if (p2Type.value === 'Human') {
+                inviteContainer.style.display = 'block';
+                
+                if (inviteCheckbox.checked) {
+                    p2Name.disabled = true;
+                    p2Name.value = '';
+                    p2Name.placeholder = 'Will join via code';
+                } else {
+                    p2Name.disabled = false;
+                    p2Name.value = '';
+                    p2Name.readOnly = false;
+                    p2Name.placeholder = 'Player 2';
+                }
+            } else {
+                inviteContainer.style.display = 'none';
+                inviteCheckbox.checked = false;
+                
+                if (p2Type.value === 'AI') {
+                    p2Name.disabled = true;
+                    p2Name.value = '';
+                    p2Name.placeholder = 'AI';
+                }
+            }
+        } else {
+            p2Type.value = 'Human';
+            p2Type.disabled = true;
+            p2Name.value = username;
+            p2Name.readOnly = true;
+            p1Type.disabled = false;
+            
+            if (p1Type.value === 'Human') {
+                inviteContainer.style.display = 'block';
+                
+                if (inviteCheckbox.checked) {
+                    p1Name.disabled = true;
+                    p1Name.value = '';
+                    p1Name.placeholder = 'Will join via code';
+                } else {
+                    p1Name.disabled = false;
+                    p1Name.value = '';
+                    p1Name.readOnly = false;
+                    p1Name.placeholder = 'Player 1';
+                }
+            } else {
+                inviteContainer.style.display = 'none';
+                inviteCheckbox.checked = false;
+                
+                if (p1Type.value === 'AI') {
+                    p1Name.disabled = true;
+                    p1Name.value = '';
+                    p1Name.placeholder = 'AI';
+                }
+            }
+        }
+    }
+    
+    document.getElementById('invitePlayer2')?.addEventListener('change', updatePlayerFields);
+    document.addEventListener('DOMContentLoaded', updatePlayerFields);
+</script>

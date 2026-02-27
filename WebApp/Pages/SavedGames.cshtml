@@ -1,0 +1,116 @@
+@page
+@model WebApp.Pages.SavedGamesModel
+@{
+    ViewData["Title"] = "Saved Games";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="mb-0">Saved Games</h2>
+                        <a asp-page="/ChooseGame" class="btn btn-light btn-sm">
+                            <i class="bi bi-arrow-left"></i> Back to Menu
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (TempData["SaveMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @TempData["SaveMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                    
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    @if (Model.SavedGames.Any())
+                    {
+                        <p class="text-muted mb-3">You have @Model.SavedGames.Count saved game(s)</p>
+                        
+                        <div class="alert alert-info d-flex align-items-center mb-3" role="alert">
+                            <i class="bi bi-people-fill me-2"></i>
+                            <small>This icon indicates a multiplayer game that requires another player to connect from a different device</small>
+                        </div>
+                        
+                        <div class="list-group">
+                            @foreach (var game in Model.SavedGames)
+                            {
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5 class="mb-1">
+                                                @if (game.description.StartsWith("Multiplayer game"))
+                                                {
+                                                    <i class="bi bi-people-fill text-primary"></i>
+                                                }
+                                                @game.description
+                                            </h5>
+                                            <small class="text-muted">ID: @game.id</small>
+                                        </div>
+                                        <div>
+                                            <form method="post" asp-page-handler="LoadGame" class="d-inline">
+                                                <input type="hidden" name="gameId" value="@game.id" />
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="bi bi-play-fill"></i> Load Game
+                                                </button>
+                                            </form>
+                                            <button type="button" 
+                                                    class="btn btn-outline-danger ms-2" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#deleteModal-@game.id">
+                                                <i class="bi bi-trash"></i> Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="modal fade" id="deleteModal-@game.id" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Confirm Delete</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure you want to delete <strong>@game.description</strong>?</p>
+                                                <p class="text-danger mb-0">This action cannot be undone.</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <form method="post" asp-page-handler="DeleteGame" class="d-inline">
+                                                    <input type="hidden" name="gameId" value="@game.id" />
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="bi bi-inbox display-1 text-muted"></i>
+                            <h4 class="mt-3">No Saved Games</h4>
+                            <p class="text-muted">You don't have any saved games yet.</p>
+                            <a asp-page="/ConfigureGame" class="btn btn-primary mt-2">
+                                <i class="bi bi-plus-circle"></i> Start New Game
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

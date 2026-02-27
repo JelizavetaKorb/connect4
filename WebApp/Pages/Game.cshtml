@@ -1,0 +1,453 @@
+@page
+@model WebApp.Pages.GameModel
+@{
+    ViewData["Title"] = "Play Game";
+}
+
+<div class="container mt-4">
+    @if (TempData["GameDeleted"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Game Deleted!</strong> @TempData["DeletedGameName"] has been deleted by another player.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="text-center">
+            <a asp-page="/SavedGames" class="btn btn-primary">Back to Saved Games</a>
+            <a asp-page="/ConfigureGame" class="btn btn-success">Start New Game</a>
+        </div>
+    }
+    else if (Model.GameBrain != null)
+    {
+        var config = Model.GameBrain.GameConfiguration;
+        var isNextPlayerX = Model.GameBrain.IsNextPlayerX();
+        var currentPlayerName = isNextPlayerX ? config.Player1Name : config.Player2Name;
+        var currentPlayerType = isNextPlayerX ? config.P1Type : config.P2Type;
+        var currentPiece = isNextPlayerX ? "X" : "O";
+
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card shadow-lg">
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-12 col-xl-8 text-center mb-4 mb-xl-0">
+                                <partial name="_GameBoard" model="Model.GameBrain.GetBoardJagged()"/>
+                            </div>
+
+                            <div class="col-12 col-xl-4">
+                                <div class="mb-3">
+                                    <h6 class="mb-2">Settings</h6>
+                                    <p class="mb-1 small">Board: @config.BoardWidth × @config.BoardHeight</p>
+                                    <p class="mb-1 small">Win: @config.WinCondition in a row</p>
+                                    <p class="mb-0 small">Type: @(config.IsCylindrical ? "Cylindrical" : "Normal")</p>
+                                </div>
+
+                                <div class="mb-3">
+                                    <h6 class="mb-2">Players</h6>
+                                    <p class="mb-1 small">
+                                        <span class="badge bg-danger" style="width: 25px;">X</span> @config.Player1Name
+                                    </p>
+                                    <p class="mb-0 small">
+                                        <span class="badge" style="background-color: #a855f7; width: 25px;">O</span> @config.Player2Name
+                                    </p>
+                                </div>
+
+                                @if (!Model.IsGameOver)
+                                {
+                                    <div class="mb-3 p-3 border rounded">
+                                        <h6 class="mb-2">Next move by:</h6>
+                                        <p class="mb-1">
+                                            <span class="badge @(isNextPlayerX ? "bg-danger" : "")" style="@(isNextPlayerX ? "" : "background-color: #a855f7;") width: 25px;">@currentPiece</span>
+                                            <strong>@currentPlayerName</strong>
+                                        </p>
+
+                                        @if (config.IsCylindrical)
+                                        {
+                                            <p class="mb-0 small text-warning">Board wraps around!</p>
+                                        }
+                                    </div>
+
+                                    @if (currentPlayerType == BLL.EPlayerType.Human)
+                                    {
+                                        <div>
+                                            <form id="moveForm">
+                                                <div class="mb-2">
+                                                    <input type="number"
+                                                           id="columnInput"
+                                                           name="column"
+                                                           class="form-control"
+                                                           placeholder="enter column number and drop"
+                                                           min="1"
+                                                           max="@config.BoardWidth"
+                                                           required
+                                                           autofocus/>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary w-100">DROP</button>
+                                            </form>
+
+                                            <div id="statusMessage" class="alert alert-info mt-2 mb-0 py-2 px-2 small" style="display: none;"></div>
+
+                                            @if (Model.IsMultiplayerGame)
+                                            {
+                                                <form method="post" asp-page-handler="SaveGame" class="mt-2">
+                                                    <input type="hidden" name="saveName" value=""/>
+                                                    <button type="submit" class="btn btn-success w-100">
+                                                        SAVE & EXIT
+                                                    </button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                @if (string.IsNullOrEmpty(Model.GameName))
+                                                {
+                                                    <button type="button" class="btn btn-success w-100 mt-2" data-bs-toggle="modal" data-bs-target="#saveGameModal">
+                                                        SAVE & EXIT
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <form method="post" asp-page-handler="SaveGame" class="mt-2">
+                                                        <input type="hidden" name="saveName" value="@Model.GameName"/>
+                                                        <button type="submit" class="btn btn-success w-100">
+                                                            SAVE & EXIT
+                                                        </button>
+                                                    </form>
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="text-center">
+                                        <h5 class="mb-3">@Model.GameStatus</h5>
+                                        <form method="post" asp-page-handler="NewGame" class="mb-2">
+                                            <button type="submit" class="btn btn-success w-100">New Game</button>
+                                        </form>
+                                        @if (Model.IsMultiplayerGame && Model.IsGameOver)
+                                        {
+                                            <form method="post" asp-page-handler="LeaveGame" class="mt-2">
+                                                <button type="submit" class="btn btn-outline-secondary w-100">Game Menu</button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <a asp-page="/ChooseGame" class="btn btn-outline-secondary w-100">Game Menu</a>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">
+            <h4>No Active Game</h4>
+            <p>You don't have an active game.</p>
+            <a asp-page="/ConfigureGame" class="btn btn-primary">Start New Game</a>
+        </div>
+    }
+</div>
+
+<div class="modal fade" id="saveGameModal" tabindex="-1" aria-labelledby="saveGameModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="saveGameModalLabel">Save Game</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" asp-page-handler="SaveGame">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="saveName" class="form-label">Game Name</label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="saveName" 
+                               name="saveName" 
+                               placeholder="Enter a name for this save"
+                               value="@Model.GameName"
+                               required 
+                               maxlength="100" />
+                        <div class="form-text">
+                            @if (!string.IsNullOrEmpty(Model.GameName))
+                            {
+                                <text>Updating existing save. You can change the name if you want.</text>
+                            }
+                            else
+                            {
+                                <text>This name will help you identify your saved game.</text>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save & Exit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@if (Model.GameBrain != null && !Model.IsGameOver)
+{
+    var currentPlayerType = Model.GameBrain.IsNextPlayerX() 
+        ? Model.GameBrain.GameConfiguration.P1Type 
+        : Model.GameBrain.GameConfiguration.P2Type;
+    
+    @if (currentPlayerType == BLL.EPlayerType.Ai)
+    {
+        <script>
+        window.onload = async function() {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            try {
+                const response = await fetch('?handler=AIMove', {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    if (window.animatePieceDrop && result.dropColumn !== undefined && result.dropRow !== undefined) {
+                        await window.animatePieceDrop(result.dropColumn, result.dropRow, result.piece);
+                    }
+                    window.location.reload();
+                } else {
+                    window.location.reload();
+                }
+            } catch (error) {
+                console.error('AI move error:', error);
+                window.location.reload();
+            }
+        };
+    </script>
+    
+        <div class="text-center mt-3">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text-muted mt-2">AI is thinking...</p>
+        </div>
+    }
+}
+
+<script>
+    document.getElementById('moveForm')?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const columnInput = document.getElementById('columnInput');
+        const column = parseInt(columnInput.value);
+        const statusMessage = document.getElementById('statusMessage');
+        columnInput.disabled = true;
+        
+        try {
+            const formData = new FormData();
+            formData.append('column', column);
+            
+            const response = await fetch('?handler=MakeMoveAjax', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                }
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                if (window.animatePieceDrop && result.dropColumn !== undefined && result.dropRow !== undefined) {
+                    await window.animatePieceDrop(result.dropColumn, result.dropRow, result.piece);
+                }
+                if (result.gameOver) {
+                    window.location.reload();
+                } else {
+                    window.location.reload();
+                }
+            } else {
+                statusMessage.textContent = result.message;
+                statusMessage.className = 'alert alert-warning mt-2 mb-0 py-2 px-2 small';
+                statusMessage.style.display = 'block';
+                columnInput.disabled = false;
+            }
+        } catch (error) {
+            statusMessage.textContent = 'Error making move. Please try again.';
+            statusMessage.className = 'alert alert-danger mt-2 mb-0 py-2 px-2 small';
+            statusMessage.style.display = 'block';
+            columnInput.disabled = false;
+        }
+        
+        columnInput.value = '';
+    });
+</script>
+
+@if (Model.IsMultiplayerGame && Model.GameBrain != null)
+{
+    var isPlayer1 = Model.GameBrain.GameConfiguration.Player1Name.Equals(Model.Username, StringComparison.OrdinalIgnoreCase);
+    var isMyTurn = (isPlayer1 && Model.GameBrain.IsNextPlayerX()) || (!isPlayer1 && !Model.GameBrain.IsNextPlayerX());
+    
+    <script>
+        const myName = '@Model.Username';
+        const gameId = '@Model.CurrentGameId';
+        const isMyTurn = @(isMyTurn ? "true" : "false");
+        
+        if (!isMyTurn && !@Model.IsGameOver.ToString().ToLower()) {
+            const columnInput = document.getElementById('columnInput');
+            const moveForm = document.getElementById('moveForm');
+            if (columnInput) {
+                columnInput.disabled = true;
+                columnInput.placeholder = "Waiting for opponent...";
+            }
+            if (moveForm) {
+                moveForm.querySelector('button[type="submit"]').disabled = true;
+            }
+        }
+        const pollInterval = setInterval(async () => {
+            try {
+                const response = await fetch(`?handler=CheckGameState&gameId=${gameId}`);
+                const data = await response.json();
+
+                if (data.gameDeleted) {
+                    clearInterval(pollInterval);
+                    alert('This game has been deleted by another player.');
+                    window.location.replace('/SavedGames');
+                    return;
+                }
+
+                if (data.shouldRefresh) {
+                    window.location.reload();
+                    return;
+                }
+
+                if (data.opponentLeft) {
+                    clearInterval(pollInterval);
+                    alert('Opponent has left the game (inactive for 3 minutes)');
+                    window.location.replace('/ChooseGame');
+                    return;
+                }
+
+                if (data.opponentWantsToExit) {
+                    clearInterval(pollInterval);
+                    window.location.replace('/ChooseGame');
+                    return;
+                }
+
+                if (data.player2Joined) {
+                    window.location.reload();
+                    return;
+                }
+
+                if (data.gameOver) {
+                    clearInterval(pollInterval);
+                    window.location.reload();
+                    return;
+                }
+            } catch (error) {
+                console.error('Polling error:', error);
+            }
+        }, 5000);
+        
+        window.addEventListener('beforeunload', () => {
+            clearInterval(pollInterval);
+        });
+    </script>
+    
+    @if (!Model.IsGameOver)
+    {
+        <div class="alert alert-info mt-3 text-center">
+            <i class="bi bi-people-fill"></i> <strong>Multiplayer Game</strong>
+            <br><small>Playing with: <strong>@Model.OpponentName</strong></small>
+            @if (!isMyTurn)
+            {
+                <br><small class="text-warning">Waiting for opponent's move...</small>
+            }
+            else
+            {
+                <br><small class="text-success">✓ Your turn!</small>
+            }
+        </div>
+    }
+}
+
+@if (TempData["JoinCode"] != null)
+{
+    <div class="modal show d-block" tabindex="-1" id="joinCodeModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">
+                        <i class="bi bi-share"></i> Share Join Code
+                    </h5>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <p class="mb-3">Share this code with Player 2:</p>
+                    <h1 class="display-3 fw-bold text-primary mb-3" style="font-family: monospace;">@TempData["JoinCode"]</h1>
+                    <p class="text-muted mb-3">
+                        <i class="bi bi-hourglass-split"></i> Waiting for Player 2 to join...
+                    </p>
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="cancelGame()">Cancel & Exit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop show"></div>
+
+    <script>
+        const modalShownTime = Date.now();
+        const minimumDisplayTime = 10000;
+
+        const checkPlayerJoined = setInterval(async () => {
+            const gameId = '@Model.CurrentGameId';
+            try {
+                const response = await fetch(`?handler=CheckGameState&gameId=${gameId}`);
+                const data = await response.json();
+
+                if (data.player2Joined) {
+                    const elapsedTime = Date.now() - modalShownTime;
+
+                    if (elapsedTime >= minimumDisplayTime) {
+                        clearInterval(checkPlayerJoined);
+                        document.getElementById('joinCodeModal').style.display = 'none';
+                        document.querySelector('.modal-backdrop').style.display = 'none';
+                        window.location.reload();
+                    } else {
+                        const remainingTime = minimumDisplayTime - elapsedTime;
+                        setTimeout(() => {
+                            clearInterval(checkPlayerJoined);
+                            document.getElementById('joinCodeModal').style.display = 'none';
+                            document.querySelector('.modal-backdrop').style.display = 'none';
+                            window.location.reload();
+                        }, remainingTime);
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking player joined:', error);
+            }
+        }, 2000);
+
+        function cancelGame() {
+            clearInterval(checkPlayerJoined);
+            fetch('?handler=DeleteMultiplayerGame', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                },
+                body: 'gameId=@Model.CurrentGameId'
+            }).then(() => {
+                window.location.href = '/ChooseGame';
+            });
+        }
+    </script>
+}
